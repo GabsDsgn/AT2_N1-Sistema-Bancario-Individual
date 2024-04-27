@@ -43,4 +43,15 @@ public class Loja {
             }
         }
     }
+
+    public double calcularSalarios() {
+        double totalSalarios = 0;
+
+        // Calcula o total dos salários dos funcionários
+        for (Funcionario funcionario : funcionarios) {
+            totalSalarios += 1400; // Cada funcionário recebe R$ 1400
+        }
+
+        return totalSalarios;
+    }
 }
