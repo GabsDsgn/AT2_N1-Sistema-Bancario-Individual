@@ -1,3 +1,6 @@
+import java.text.DecimalFormat;
+import java.util.Random;
+
 public class TesteClienteLoja {
     public static void main(String[] args) {
         // Criando uma instância do banco
@@ -29,7 +32,7 @@ public class TesteClienteLoja {
             clientes[i].start(); // Inicia a thread do cliente
         }
 
-    // Simulando compras contínuas até que o saldo da conta dos clientes se esgote
+        // Simulando compras contínuas até que o saldo da conta dos clientes se esgote
         boolean saldoSuficiente = true;
         while (saldoSuficiente) {
             saldoSuficiente = false;
@@ -44,8 +47,6 @@ public class TesteClienteLoja {
             }
         }
 
-
-
         // Simula o pagamento dos clientes à loja
         double totalPagamento = 0;
         for (int i = 0; i < clientes.length; i++) {
@@ -58,9 +59,21 @@ public class TesteClienteLoja {
             loja.pagarFuncionarios();
         }
 
+        // Adicionando transações aleatórias adicionais
+        Random random = new Random();
+        double valorTransacao = random.nextDouble() * 1000; // Valor aleatório entre 0 e 1000
+        contaLoja.depositar(valorTransacao); // Deposita um valor aleatório na conta da loja
+        valorTransacao = random.nextDouble() * 1000; // Valor aleatório entre 0 e 1000
+        contaClientes.depositar(valorTransacao); // Deposita um valor aleatório na conta dos clientes
+        valorTransacao = random.nextDouble() * 1000; // Valor aleatório entre 0 e 1000
+        contaInvestimentos.depositar(valorTransacao); // Deposita um valor aleatório na conta de investimentos dos funcionários
+
+        // Formato par exibir os valores monetários com duas casas apenas
+        DecimalFormat df = new DecimalFormat("#.00");
+
         // Exibe o saldo final das contas
-        System.out.println("Saldo final da conta da loja: R$ " + contaLoja.getSaldo());
-        System.out.println("Saldo final da conta dos clientes: R$ " + contaClientes.getSaldo());
-        System.out.println("Saldo final da conta de investimentos dos funcionários: R$ " + contaInvestimentos.getSaldo());
+        System.out.println("Saldo final da conta da loja: R$ " + df.format(contaLoja.getSaldo()));
+        System.out.println("Saldo final da conta dos clientes: R$ " + df.format(contaClientes.getSaldo()));
+        System.out.println("Saldo final da conta de investimentos dos funcionários: R$ " + df.format(contaInvestimentos.getSaldo()));
     }
 }
