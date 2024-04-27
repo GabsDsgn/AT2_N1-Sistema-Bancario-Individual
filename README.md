@@ -24,4 +24,4 @@ O projeto está dividido em várias classes Java:
 
 ## Execução
 
-Para executar o programa de teste `TesteClienteLoja`, basta compilá-lo e executá-lo em um ambiente Java adequado. Certifique-se de ter o JDK instalado e configurado corretamente.
+Para executar o programa de teste `Main`, basta compilá-lo e executá-lo em um ambiente Java adequado. Certifique-se de ter o JDK instalado e configurado corretamente.
