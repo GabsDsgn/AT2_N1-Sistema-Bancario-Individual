@@ -1,9 +1,12 @@
 // Classe Conta
 public class Conta {
     private double saldo;
+    private int numero; // Adicionando um número de conta
 
-    public Conta(double saldoInicial) {
+    // Construtor que aceita o saldo inicial e o número de conta
+    public Conta(double saldoInicial, int numero) {
         this.saldo = saldoInicial;
+        this.numero = numero;
     }
 
     // Método para depositar dinheiro na conta
@@ -27,5 +30,10 @@ public class Conta {
     // Método para obter o saldo atual da conta
     public synchronized double getSaldo() {
         return saldo;
+    }
+
+    // Método para obter o número da conta
+    public synchronized int getNumero() {
+        return numero;
     }
 }

@@ -7,14 +7,14 @@ public class TesteClienteLoja {
         Banco banco = new Banco();
 
         // Criando uma conta para a loja e outra para os clientes
-        Conta contaLoja = new Conta(0);
-        Conta contaClientes = new Conta(1000);
+        Conta contaLoja = new Conta(0, 123456); // Adicionando número da conta
+        Conta contaClientes = new Conta(1000, 654321); // Adicionando número da conta
 
         // Criando uma instância da loja
         Loja loja = new Loja(contaLoja);
 
         // Adicionando funcionários à loja
-        Conta contaInvestimentos = new Conta(0); // Conta para investimentos dos funcionários
+        Conta contaInvestimentos = new Conta(0, 987654); // Adicionando número da conta
         Funcionario funcionario1 = new Funcionario(contaLoja, contaInvestimentos);
         Funcionario funcionario2 = new Funcionario(contaLoja, contaInvestimentos);
         loja.adicionarFuncionario(funcionario1);
@@ -37,11 +37,11 @@ public class TesteClienteLoja {
         while (saldoSuficiente) {
             saldoSuficiente = false;
             for (Cliente cliente : clientes) {
-                if (cliente.getContaClientes().getSaldo() >= 100) { // Verifica se o saldo é suficiente para uma compra de R$ 100
-                    cliente.getContaClientes().sacar(100); // Realiza uma compra de R$ 100
+                if (cliente.getConta().getSaldo() >= 100) { // Corrigindo o método para obter a conta do cliente
+                    cliente.getConta().sacar(100); // Realiza uma compra de R$ 100
                     saldoSuficiente = true;
-                } else if (cliente.getContaClientes().getSaldo() >= 200) { // Verifica se o saldo é suficiente para uma compra de R$ 200
-                    cliente.getContaClientes().sacar(200); // Realiza uma compra de R$ 200
+                } else if (cliente.getConta().getSaldo() >= 200) { // Corrigindo o método para obter a conta do cliente
+                    cliente.getConta().sacar(200); // Realiza uma compra de R$ 200
                     saldoSuficiente = true;
                 }
             }
@@ -53,6 +53,8 @@ public class TesteClienteLoja {
             totalPagamento += 200; // Cada cliente pagou R$ 200
         }
         loja.receberPagamento(totalPagamento);
+        DecimalFormat df = new DecimalFormat("#0.00");
+        System.out.println("Loja: Recebimento de pagamento de R$ " + df.format(totalPagamento));
 
         // Paga os funcionários se houver saldo suficiente na loja
         if (contaLoja.getSaldo() >= loja.calcularSalarios()) {
@@ -63,15 +65,15 @@ public class TesteClienteLoja {
         Random random = new Random();
         double valorTransacao = random.nextDouble() * 1000; // Valor aleatório entre 0 e 1000
         contaLoja.depositar(valorTransacao); // Deposita um valor aleatório na conta da loja
+        System.out.println("Depósito de R$ " + df.format(valorTransacao) + " realizado com sucesso. Novo saldo: R$ " + df.format(contaLoja.getSaldo()));
         valorTransacao = random.nextDouble() * 1000; // Valor aleatório entre 0 e 1000
         contaClientes.depositar(valorTransacao); // Deposita um valor aleatório na conta dos clientes
+        System.out.println("Depósito de R$ " + df.format(valorTransacao) + " realizado com sucesso. Novo saldo: R$ " + df.format(contaClientes.getSaldo()));
         valorTransacao = random.nextDouble() * 1000; // Valor aleatório entre 0 e 1000
         contaInvestimentos.depositar(valorTransacao); // Deposita um valor aleatório na conta de investimentos dos funcionários
+        System.out.println("Depósito de R$ " + df.format(valorTransacao) + " realizado com sucesso. Novo saldo: R$ " + df.format(contaInvestimentos.getSaldo()));
 
-        // Formato par exibir os valores monetários com duas casas apenas
-        DecimalFormat df = new DecimalFormat("#.00");
-
-        // Exibe o saldo final das contas
+        // Exibe o saldo final das contas formatado corretamente
         System.out.println("Saldo final da conta da loja: R$ " + df.format(contaLoja.getSaldo()));
         System.out.println("Saldo final da conta dos clientes: R$ " + df.format(contaClientes.getSaldo()));
         System.out.println("Saldo final da conta de investimentos dos funcionários: R$ " + df.format(contaInvestimentos.getSaldo()));
