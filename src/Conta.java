@@ -1,25 +1,23 @@
-// Classe Conta
 public class Conta {
     private double saldo;
-    private int numero; // Adicionando um número de conta
+    private String titular;
+    private int numero; // Número da conta
 
-    // Construtor que aceita o saldo inicial e o número de conta
-    public Conta(double saldoInicial, int numero) {
+    public Conta(double saldoInicial, int numero, String titular) {
         this.saldo = saldoInicial;
         this.numero = numero;
+        this.titular = titular;
     }
 
-    // Método para depositar dinheiro na conta
     public synchronized void depositar(double valor) {
         saldo += valor;
-        System.out.println("Depósito de R$ " + valor + " realizado com sucesso. Novo saldo: R$ " + saldo);
+        System.out.println("Depósito de R$ " + String.format("%.2f", valor) + " realizado com sucesso. Novo saldo: R$ " + String.format("%.2f", saldo));
     }
 
-    // Método para sacar dinheiro da conta
     public synchronized boolean sacar(double valor) {
         if (valor <= saldo) {
             saldo -= valor;
-            System.out.println("Saque de R$ " + valor + " realizado com sucesso. Novo saldo: R$ " + saldo);
+            System.out.println("Saque de R$ " + String.format("%.2f", valor) + " realizado com sucesso. Novo saldo: R$ " + String.format("%.2f", saldo));
             return true;
         } else {
             System.out.println("Saldo insuficiente para realizar o saque.");
@@ -27,13 +25,16 @@ public class Conta {
         }
     }
 
-    // Método para obter o saldo atual da conta
     public synchronized double getSaldo() {
         return saldo;
     }
 
-    // Método para obter o número da conta
+    public synchronized String getTitular() {
+        return titular;
+    }
+
     public synchronized int getNumero() {
         return numero;
     }
 }
+

@@ -1,26 +1,36 @@
 public class Cliente extends Thread {
-    private Conta contaClientes;
+    private Conta contaCliente;
+    private Loja lojaA;
+    private Loja lojaB;
 
-    public Cliente(Conta contaClientes) {
-        this.contaClientes = contaClientes;
+    public Cliente(Conta contaCliente, Loja lojaA, Loja lojaB) {
+        this.contaCliente = contaCliente;
+        this.lojaA = lojaA;
+        this.lojaB = lojaB;
     }
 
     @Override
     public void run() {
-        // Lógica para realizar compras
-        while (contaClientes.getSaldo() > 0) {
-            // Realiza compras alternando entre R$ 100,00 e R$ 200,00
+        int clienteNumber = Integer.parseInt(Thread.currentThread().getName().substring(7));
+        while (contaCliente.getSaldo() > 0) {
             double valorCompra = Math.random() < 0.5 ? 100 : 200;
-            if (contaClientes.sacar(valorCompra)) {
-                System.out.println("Cliente: Compra de R$ " + valorCompra + " realizada. Saldo atual: R$ " + contaClientes.getSaldo());
+            if (contaCliente.getSaldo() >= valorCompra && contaCliente.sacar(valorCompra)) {
+                System.out.println("Cliente " + clienteNumber + ": Compra de R$ " + String.format("%.2f", valorCompra) + " realizada. Saldo atual: R$ " + String.format("%.2f", contaCliente.getSaldo()));
+                // Escolha aleatória entre as lojas A e B para realizar a compra
+                Loja lojaEscolhida = Math.random() < 0.5 ? lojaA : lojaB;
+                lojaEscolhida.receberPagamento(valorCompra);
             } else {
-                break; // Se não houver saldo suficiente, interrompe as compras
+                break; // Encerra o loop quando o saldo do cliente for insuficiente para realizar a compra
             }
         }
+        System.out.println("Saldo Final Cliente " + clienteNumber + ": R$ " + String.format("%.2f", contaCliente.getSaldo()));
+        // Pagar os funcionários após as operações do cliente
+        lojaA.pagarFuncionarios();
+        lojaB.pagarFuncionarios();
     }
 
     // Método para obter a conta do cliente
-    public Conta getConta() {
-        return contaClientes;
+    public Conta getContaCliente() {
+        return contaCliente;
     }
 }

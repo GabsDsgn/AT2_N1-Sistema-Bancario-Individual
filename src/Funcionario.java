@@ -1,30 +1,37 @@
 public class Funcionario extends Thread {
     private Conta contaSalario;
-    private Conta contaInvestimentos;
+    private Conta contaInvestimento;
+    private Loja loja;
 
-    public Funcionario(Conta contaSalario, Conta contaInvestimentos) {
+    public Funcionario(Conta contaSalario, Conta contaInvestimento, Loja loja) {
         this.contaSalario = contaSalario;
-        this.contaInvestimentos = contaInvestimentos;
+        this.contaInvestimento = contaInvestimento;
+        this.loja = loja;
     }
 
     @Override
     public void run() {
-        // Lógica para receber salário, investir parte dele e outras operações
-        receberSalario(1400); // Recebe o salário de R$ 1400
+        double salario = 1400; // Definindo o valor do salário
+        loja.pagarSalario(this, salario); // Chama o método da Loja para pagar o salário
         investirSalario();
     }
 
     public synchronized void receberSalario(double valor) {
         contaSalario.depositar(valor);
-        System.out.println("Funcionário: Recebimento de salário de R$ " + valor + ". Saldo atual da conta de salário: R$ " + contaSalario.getSaldo());
+        System.out.println("Funcionário: Salário recebido: R$ " + valor);
     }
 
     public void investirSalario() {
-        double valorInvestimento = contaSalario.getSaldo() * 0.2; // Calcula 20% do salário para investir
-        if (valorInvestimento > 0) {
-            contaSalario.sacar(valorInvestimento); // Retira o valor do investimento da conta de salário
-            contaInvestimentos.depositar(valorInvestimento); // Deposita o valor do investimento na conta de investimentos
-            System.out.println("Funcionário: Investimento de R$ " + valorInvestimento + " realizado. Saldo atual da conta de investimentos: R$ " + contaInvestimentos.getSaldo());
+        synchronized (contaSalario) { // Sincronizar o acesso à conta salarial
+            double saldoSalario = contaSalario.getSaldo();
+            double valorInvestimento = saldoSalario * 0.2;
+            if (valorInvestimento > 0 && saldoSalario >= valorInvestimento) {
+                contaSalario.sacar(valorInvestimento);
+                contaInvestimento.depositar(valorInvestimento);
+                System.out.println("Funcionário: Valor de investimento: R$ " + valorInvestimento);
+            } else {
+                System.out.println("Funcionário: Saldo insuficiente para investimento.");
+            }
         }
     }
 }
